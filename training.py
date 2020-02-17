@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+import subprocess as sp
 import csv
 import math
 import matplotlib.pyplot as plt
@@ -117,6 +118,7 @@ if verbose:
 				i = -1
 				a *= 0.9
 				calculateStart()
+				sp.call('clear',shell=True)
 				verb('\nStep was too big, retrying with step = ' + str(a))
 			else:
 				bar.update(i)
@@ -135,6 +137,11 @@ verb('Results of the linear regression:')
 verb('t0 = ' + str(t[0]))
 verb('t1 = ' + str(t[1]))
 
+verb('Writing the data inside .theta file')
+saveFile = open('.theta', 'w')
+saveFile.write(str(t[0]) + ',' + str(t[1]))
+saveFile.close()
+
 if graph:
 	verb('Plotting dataset.')
 	plt.plot(dataset[0], dataset[1], 'ro')
@@ -142,8 +149,3 @@ if graph:
 	rr = np.arange(plotRange[0][0] - 10, plotRange[0][1] + 10, 1)
 	plt.plot(rr, h(rr).astype(np.float))
 	plt.show()
-
-verb('Writing the data inside .theta file')
-saveFile = open('.theta', 'w')
-saveFile.write(str(t[0]) + ',' + str(t[1]))
-saveFile.close()
